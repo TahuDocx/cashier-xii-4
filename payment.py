@@ -22,6 +22,12 @@ class Payment:
 
     def getChange(self):
         return  self.change
+    
+    def getQuantity(self):
+        total = 0
+        for item in self.purchased_items:
+            total += item["quantity"]
+        return total
 
     def setPurchasedItems(self, item_boxes):
         self.purchased_items = [{"item":item_box.item, "quantity":item_box.quantity} for item_box in item_boxes if item_box.quantity > 0]

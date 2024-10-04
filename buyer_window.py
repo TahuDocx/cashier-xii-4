@@ -49,5 +49,5 @@ class BuyerWindow(Window):
 
     def update(self, purchasedItem):
         self.items_purchased = purchasedItem
-        print(self.items_purchased)
+        # print(self.items_purchased)
         

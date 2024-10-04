@@ -10,51 +10,63 @@ from title import Title
 
 infoPayment = Payment()
 
+class PurchasedItems:
+    def __init__(self):
+        pass
+
 class InformationPanel:
     def __init__(self, width, height, bgBatch, textBatch):
-        self.width = 350
-        self.height = height-100
+        self.width = 500
+        self.height = 414
         self.x = width - self.width
         self.y = 0
-        self.xLabel = self.x + 20
-        self.xInpInf = self.x + 180
-        self.xLabel = self.x+20
-        self.xInpInf = self.x+180
+        self.xLabel = self.x + 24
+        self.xInpInf = self.x + 202
+        self.iGapY = -1
+
+        
         self.yLabel = {
-            "name": self.height-50,
-            "paymentMethod": self.height-90,
-            "total": self.height-130,
-            "cash": self.height-170,
-            "coupons": self.height-210,
-            "change": self.height-250,
-            "tip": self.height-290,
+            "name": self.height-(self.gap()),
+            "payment_method": self.height-(self.gap()),
+            "total": self.height-(self.gap()),
+            "total_quantity": self.height-(self.gap()),
+            "cash": self.height-(self.gap()),
+            "coupons": self.height-(self.gap()),
+            "change": self.height-(self.gap()),
+            "tip": self.height-(self.gap())
         }
-        self.container = pyglet.shapes.BorderedRectangle(x=width-self.width, y=0, width=self.width, height=height, border_color=(255,255,255,255), color=(0,0,255,255), border=2, batch=bgBatch)
+        self.container = pyglet.shapes.BorderedRectangle(x=width-self.width, y=0, width=self.width, height=self.height, border_color=(255,255,255,255), color=(0,0,255,255), border=2, batch=bgBatch)
 
         self.labels = [
             pyglet.text.Label('Name', x=self.xLabel, y=self.yLabel["name"], anchor_y='bottom',
-                             color=(255, 255, 255, 255), batch=textBatch),
-            pyglet.text.Label('Payment Method', x=self.xLabel, y=self.yLabel["paymentMethod"], anchor_y='bottom',
-                             color=(255, 255, 255, 255), batch=textBatch),
+                             color=(255, 255, 255, 255), height=24, align="center", font_size=14, batch=textBatch),
+            pyglet.text.Label('Payment Method', x=self.xLabel, y=self.yLabel["payment_method"], anchor_y='bottom',
+                             color=(255, 255, 255, 255), height=24, align="center", font_size=14, batch=textBatch),
             pyglet.text.Label('Total', x=self.xLabel, y=self.yLabel["total"],
-                             anchor_y='bottom', color=(255, 255, 255, 255),
+                             anchor_y='bottom', color=(255, 255, 255, 255), height=24, align="center", font_size=14,
+                             batch=textBatch),
+            pyglet.text.Label('Total Quantity', x=self.xLabel, y=self.yLabel["total_quantity"],
+                             anchor_y='bottom', color=(255, 255, 255, 255), height=24, align="center", font_size=14,
                              batch=textBatch),
             pyglet.text.Label('Cash', x=self.xLabel, y=self.yLabel["cash"],
-                             anchor_y='bottom', color=(255, 255, 255, 255),
+                             anchor_y='bottom', color=(255, 255, 255, 255), height=24, align="center", font_size=14,
                              batch=textBatch),
             pyglet.text.Label('Coupons', x=self.xLabel, y=self.yLabel["coupons"],
-                             anchor_y='bottom', color=(255, 255, 255, 255),
+                             anchor_y='bottom', color=(255, 255, 255, 255), height=24, align="center", font_size=14,
                              batch=textBatch),
             pyglet.text.Label('Change', x=self.xLabel, y=self.yLabel["change"],
-                             anchor_y='bottom', color=(255, 255, 255, 255),
+                             anchor_y='bottom', color=(255, 255, 255, 255), height=24, align="center", font_size=14,
                              batch=textBatch),
             pyglet.text.Label('Tip', x=self.xLabel, y=self.yLabel["tip"],
-                             anchor_y='bottom', color=(255, 255, 255, 255),
+                             anchor_y='bottom', color=(255, 255, 255, 255), height=24, align="center", font_size=14,
                              batch=textBatch)
         ]
 
         self.info = [
             pyglet.text.Label(f"{infoPayment.getTotal()}", x=self.xInpInf, y=self.yLabel["total"],
+                             anchor_y='bottom', color=(255, 255, 255, 255),
+                             batch=textBatch),
+            pyglet.text.Label(f"{infoPayment.getQuantity()}", x=self.xInpInf, y=self.yLabel["total_quantity"],
                              anchor_y='bottom', color=(255, 255, 255, 255),
                              batch=textBatch),
             pyglet.text.Label(f"{infoPayment.getChange()}", x=self.xInpInf, y=self.yLabel["change"], 
@@ -63,16 +75,22 @@ class InformationPanel:
         ]
 
         self.inputs = [
-            TextInput("name", 'Nama?', self.xInpInf, self.yLabel["name"], self.width - 210, textBatch),
-            TextInput("cash", '0', self.xInpInf, self.yLabel["cash"], self.width - 210, textBatch),
-            TextInput("coupons", '0', self.xInpInf, self.yLabel["coupons"], self.width - 210, textBatch),
-            TextInput("tip", '0', self.xInpInf, self.yLabel["tip"], self.width - 210, textBatch),
+            TextInput("name", 'Nama?', self.xInpInf, self.yLabel["name"], 274, textBatch),
+            TextInput("cash", '0', self.xInpInf, self.yLabel["cash"], 274, textBatch),
+            TextInput("coupons", '0', self.xInpInf, self.yLabel["coupons"], 274, textBatch),
+            TextInput("tip", '0', self.xInpInf, self.yLabel["tip"], 274, textBatch),
         ]
 
     def setInfo(self):
         self.info[0].text = f"{infoPayment.getTotal()}"
-        self.info[1].text = f"{infoPayment.getChange()}"
+        self.info[1].text = f"{infoPayment.getQuantity()}"
+        self.info[2].text = f"{infoPayment.getChange()}"
 
+    def gap(self):
+        inGap = 50
+        gap = 35
+        self.iGapY += 1
+        return inGap + gap * self.iGapY
     # def resetInfo(self):
 
 
@@ -104,12 +122,30 @@ class TextInput:
         return int(self.document.text)
 
 class Label:
-    def __init__(self, text, x, y, width, height, batch):
+    def __init__(self, text, x, y, width, height, batch, font_size=14, isBold=False, isItalic=False, container=False, align="left"):
+        self.x = x
+        self.y = y
+        # self.width = width
+        self.height = height
+        self.align = align
+        self.width = None
+        if(container):
+            self.width = width
+            self.align = "center"
+            self.container = pyglet.shapes.BorderedRectangle(x=x, y=y, width=width, height=height, border_color=(255,255,255,255), color=(0,0,255,255), border=2, batch=batch)
+
+        self.label = pyglet.text.Label(f"{text}", font_size=font_size, x=x, y=y, width=self.width, height=self.height, anchor_y="bottom", bold=isBold, italic=isItalic, batch=batch, align=self.align)
+
+    def updateLabel(self, text):
+        self.label.text = text
+
+class Button:
+    def __init__(self, text, x, y, width, height, batch, font_size=14, bold=False, italic=False):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.label = pyglet.text.Label(f"{text}", font_size=14, x=x, y=y, width=width, height=height, align="center", anchor_y="bottom", batch=batch)
+        self.label = pyglet.text.Label(f"{text}", font_size=font_size, x=x, y=y, width=width, height=height, anchor_y="bottom", align="center", bold=bold, italic=italic, batch=batch)
         self.rec = pyglet.shapes.BorderedRectangle(x=x, y=y, width=width, height=height, border_color=(255,255,255,255), color=(0,0,255,255), border=2, batch=batch)
 
     def updateLabel(self, text):
@@ -119,22 +155,46 @@ class ItemBox:
     def __init__(self, item, x, y, bgBatch, textBatch):
         self.item = item
         self.quantity = 0
+        self.width = 380
+        self.height = 168
+        labelWidth = 200
+        labelHeight = {
+            "category": 10,
+            "name": 15,
+            "desc": 20,
+            "price": 15,
+            "quantity": 32
+        }
+        quantityWidth = 124
+        xLabel = x+169
+        yLabel = {
+            "category": y+135,
+            "name": y+113,
+            "desc": y+86,
+            "price":y+64,
+            "quantity": y+24
+        }
 
         self.labels = [
-            Label(f"{item.name}", x, y+60, 180, 30, textBatch),
-            Label(f"{item.price}", x, y+30, 180, 30, textBatch),
-            Label(f"{self.quantity}", x, y, 180, 30, textBatch),
+            Label(f"{item.category}", xLabel, yLabel["category"], labelWidth, labelHeight["category"], textBatch, 8, True),
+            Label(f"{item.name}", xLabel, yLabel["name"], labelWidth, labelHeight["name"], textBatch, 12, True),
+            # Label(f"{item.desc}", xLabel, yLabel["desc"], labelWidth, labelHeight["name"], textBatch, 8, True),
+            Label(f"{item.price}", xLabel, yLabel["price"], labelWidth, labelHeight["price"], textBatch, 12),
+            Label(f"{self.quantity}", xLabel, yLabel["quantity"], quantityWidth, labelHeight["quantity"], textBatch, 17, container=True, align="center"),
         ]
 
         self.buttons = [
-            Label("+", x+150, y, 30, 30, textBatch),
-            Label("-", x+120, y, 30, 30, textBatch),
+            Button("+", x+150, y, 30, 30, textBatch),
+            Button("-", x+120, y, 30, 30, textBatch),
         ]
 
-        self.container = pyglet.shapes.BorderedRectangle(x=x-10, y=y-10, width=200, height=110, border_color=(255,255,255,255), color=(0,0,255,255), border=2, batch=bgBatch)
+        # self.image = pyglet.image.load(self.item.image_path)
+        self.image = pyglet.shapes.Rectangle(x=x+12, y=y+12, width=144, height=144, color=(0,150,255), batch=textBatch)
+
+        self.container = pyglet.shapes.BorderedRectangle(x=x, y=y, width=self.width, height=self.height, border_color=(255,255,255,255), color=(0,0,255,255), border=2, batch=bgBatch)
 
     def update_quantity(self):
-        self.labels[2].updateLabel(str(self.quantity))
+        self.labels[3].updateLabel(str(self.quantity))
     
     def get_quantity(self):
         return int(self.quantity_label.text)
@@ -168,7 +228,7 @@ class CashierWindow(Window):
         self.payment_methods = ["Cash", "E-Money"]
         self.payment_method = "Cash"
         self.item_boxes = [
-            ItemBox(item, 100, 500 - i * 120, self.bgBatch, self.textBatch) for i, item in enumerate(item_data.items)
+            ItemBox(item, 100, 500 - i * 223, self.bgBatch, self.textBatch) for i, item in enumerate(item_data.items)
         ]
 
         self.infoPanel = InformationPanel(self.width, self.height, self.bgBatch, self.textBatch)

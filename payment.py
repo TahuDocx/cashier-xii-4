@@ -174,7 +174,12 @@ class Payment:
             "change": self.change,
             "tip": self.tip,
             "items": [
-                {"name": item["item"].name, "price": item["item"].price, "quantity": item["quantity"]}
+                {
+                    "id": item["item"].id,
+                    "name": item["item"].name,
+                    "price": item["item"].price,
+                    "quantity": item["quantity"]
+                }
                 for item in self.purchased_items if item["quantity"] > 0
             ]
         })

@@ -3,11 +3,11 @@ from buyer_window import BuyerWindow
 import pyglet
 
 def main():
+    cashier_window = CashierWindow()
     buyer_window = BuyerWindow()
-    cashier_window = CashierWindow(buyer_window)
 
     def update(dt):
-        buyer_window.header.clock.update()
+        buyer_window.update()
         cashier_window.header.clock.update()
     
     pyglet.clock.schedule_interval(update, 1/60.0)  # Update every 60th of a second

@@ -263,10 +263,9 @@ class BuyerWindow(Window):
         super().__init__(caption="Buyer", screen=screen, fullscreen=fs, resizable=not fs, width=width, height=height)
 
         if not fs:
-           self.maximize()  # Maximize the window on creation
-
-        self.set_minimum_size(width, height)
-        self.set_maximum_size(width, height)
+            self.maximize()  # Maximize the window on creation
+            self.set_minimum_size(width, height)
+            self.set_maximum_size(width, height)
 
         pyglet.gl.glClearColor(0.0, 0.0, 0.7, 1.0)
 

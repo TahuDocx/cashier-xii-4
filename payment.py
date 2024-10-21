@@ -54,7 +54,7 @@ class Payment:
         return total
 
     def setPurchasedItems(self, item_boxes):
-        self.purchased_items = [{"item":item_box.item, "quantity":item_box.quantity} for item_box in item_boxes if item_box.quantity > 0]
+        self.purchased_items = [{"item":item_box.item, "quantity":item_box.item.quantity} for item_box in item_boxes if item_box.item.quantity > 0]
         purchased_items_id = []
         for item in self.purchased_items:
             temp = item["item"]
